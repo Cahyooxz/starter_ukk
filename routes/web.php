@@ -13,9 +13,6 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-Route::get('/', function () {
-    return view('user.index');
-});
-
+Route::get('/',[UserController::class,'index'])->name('user.index');
 Route::post('user/save',[UserController::class,'store'])->name('user.store');
+Route::delete('user/hapus/{id}',[UserController::class,'destroy'])->name('user.destroy');
