@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class UserController extends Controller
@@ -18,12 +18,14 @@ class UserController extends Controller
         // return redirect('/')->with('success', 'Task Created Successfully!');
     }
     public function store(Request $request){
-        $request->validate([
+        $validator = Validator::make($request->all(),[
             'name' => 'required',
             'email' => 'required',
             'password' => 'required',
         ]);
-
+        if ($validator->fails()) {
+            return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
+        }
         $data = [
             'name' => $request->name,
             'email' => $request->email,
